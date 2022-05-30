@@ -2,6 +2,7 @@ import { Fragment } from 'react';
 
 import MainNavigation from './MainNavigation';
 
+
 type Props = {
 
     children: JSX.Element,

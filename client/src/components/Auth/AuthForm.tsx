@@ -4,8 +4,8 @@ import { useNavigate } from 'react-router-dom';
 import Axios,{AxiosError} from 'axios';
 import { authActions } from '../../store/auth';
 import classes from './AuthForm.module.css';
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import Toast from '../UI/Toast';
+
 
 const AuthForm = () => {
   const navigate = useNavigate();
@@ -17,10 +17,16 @@ const AuthForm = () => {
 
   const [isLogin, setIsLogin] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
-
+  const [showToast, setShowToast] = useState(false);
+  const [message, setMessage] = useState('');
+  const [type, setType] = useState('');
   const switchAuthModeHandler = () => {
     setIsLogin((prevState) => !prevState);
   };
+
+  const toastHandler = () =>{
+     setShowToast(false);
+  }
 
   const submitHandler = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -57,7 +63,12 @@ const AuthForm = () => {
             // Could also use history.push('/login')
             setIsLoading(false);
             dispatch(authActions.login(response.data))
-            navigate('/');
+            setMessage('Login Successful');
+            setShowToast(true);
+            setType('success');
+            setTimeout(()=>{
+              navigate('/');
+            },1000)
         }
         else
         {   
@@ -71,15 +82,20 @@ const AuthForm = () => {
         const errObj = error as AxiosError
         const err = errObj.response?.data;
         const response = err as AxiosError;
-        const notify = () => toast.error(response.message);
-        notify();
+        setMessage(response.message);
+        setShowToast(true);
+        setType('fail');
+        setTimeout(()=>{
+          setShowToast(false);
+        },2000)
+        
 
     }
 }
 
   return (
     <section className={classes.auth}>
-        <ToastContainer position='bottom-center'/>
+        {showToast && <Toast onClose={toastHandler} type={type}>{message}</Toast>}
       <h1>{isLogin ? 'Login' : 'Sign Up'}</h1>
       <form onSubmit={submitHandler}>
         {!isLogin &&
