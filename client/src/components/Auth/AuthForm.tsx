@@ -68,7 +68,7 @@ const AuthForm = () => {
             setType('success');
             setTimeout(()=>{
               navigate('/');
-            },1000)
+            },900)
         }
         else
         {   
