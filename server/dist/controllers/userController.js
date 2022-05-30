@@ -39,11 +39,20 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.register = exports.login = void 0;
+exports.register = exports.login = exports.validate = void 0;
 var bcryptjs_1 = __importDefault(require("bcryptjs"));
 var jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 var User_1 = __importDefault(require("../model/User"));
 var secret = 'test123';
+var validate = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+    var jwt;
+    return __generator(this, function (_a) {
+        jwt = res.locals.jwt;
+        res.status(200).json({ message: jwt });
+        return [2 /*return*/];
+    });
+}); };
+exports.validate = validate;
 var login = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
     var _a, email, password, oldUser, isPasswordCorrect, token, err_1;
     return __generator(this, function (_b) {

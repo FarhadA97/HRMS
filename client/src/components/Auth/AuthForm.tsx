@@ -69,8 +69,9 @@ const AuthForm = () => {
     {
         setIsLoading(false);
         const errObj = error as AxiosError
-        const err:any = errObj.response;
-        const notify = () => toast.error(err.data?.message);
+        const err = errObj.response?.data;
+        const response = err as AxiosError;
+        const notify = () => toast.error(response.message);
         notify();
 
     }

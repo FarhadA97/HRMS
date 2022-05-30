@@ -1,5 +1,5 @@
-import { useEffect } from 'react';
-import {Route, Routes} from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import {Route, Routes, useLocation} from 'react-router-dom';
 import Layout from './components/Layout/Layout';
 import HomePage from './pages/HomePage';
 import AuthPage from './pages/AuthPage';
@@ -7,7 +7,12 @@ import AuthPage from './pages/AuthPage';
 
 const App = () => {
 
-  const isLoggedIn = localStorage.getItem('user') ? true : false;
+  const location = useLocation();
+  const [isLoggedIn, setIsLoggedIn] = useState(localStorage.getItem('user') ? true : false);
+
+  useEffect(()=>{
+    setIsLoggedIn(localStorage.getItem('user')?true:false);
+  },[location]);
 
   return (
     <Layout>

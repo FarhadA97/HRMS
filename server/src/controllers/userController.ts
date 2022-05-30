@@ -5,6 +5,11 @@ import UserModel from "../model/User";
 
 const secret = 'test123';
 
+export const validate: RequestHandler = async(req, res)=>{
+  const jwt = res.locals.jwt;
+  res.status(200).json({message: jwt});
+}
+
 export const login: RequestHandler = async (req, res) => {
   const { email, password } = req.body;
 
