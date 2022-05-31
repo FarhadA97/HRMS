@@ -3,8 +3,8 @@ import { useAppDispatch } from '../../store/hook';
 import { useNavigate } from 'react-router-dom';
 import Axios,{AxiosError} from 'axios';
 import { authActions } from '../../store/auth';
-import classes from './AuthForm.module.css';
 import Toast from '../UI/Toast';
+import classes from './AuthForm.module.css';
 
 
 const AuthForm = () => {
@@ -35,7 +35,8 @@ const AuthForm = () => {
     const password = passwordInputRef.current?.value;
     const name = nameInputRef.current?.value;
     console.log(email,name,password);
-    // optional: Add validation
+    // Add validation
+    
 
     setIsLoading(true);
     let url;

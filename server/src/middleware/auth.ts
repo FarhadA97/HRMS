@@ -10,11 +10,13 @@ const extractJWT = (req: Request, res: Response, next: NextFunction) => {
   if (token) {
       jwt.verify(token, secret, (error, decoded) => {
           if (error) {
+                
               return res.status(404).json({
                   message: error,
                   error
               });
           } else {
+             
               res.locals.jwt = decoded;
               next();
           }
