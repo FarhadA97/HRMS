@@ -1,6 +1,6 @@
 import jwt from "jsonwebtoken";
 import { Request, Response, NextFunction } from 'express';
-const secret = 'test123';
+import { secret } from "../config";
 
 const extractJWT = (req: Request, res: Response, next: NextFunction) => {
   

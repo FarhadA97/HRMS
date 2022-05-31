@@ -1,9 +1,9 @@
 import { RequestHandler } from "express";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
+import { secret } from "../config";
 import UserModel from "../model/User";
 
-const secret = 'test123';
 
 export const validate: RequestHandler = async(req, res)=>{
   const jwt = res.locals.jwt;
