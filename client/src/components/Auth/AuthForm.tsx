@@ -6,10 +6,12 @@ import { authActions } from "../../store/auth";
 import useInput, { IUserInput } from "../../hooks/use-input";
 import Toast from "../UI/Toast";
 import classes from "./AuthForm.module.css";
+import { IToastProps } from "../UI/Toast";
 
 const AuthForm = () => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
+  
   // const nameInputRef = useRef<HTMLInputElement>(null);
   // const emailInputRef = useRef<HTMLInputElement>(null);
   // const passwordInputRef = useRef<HTMLInputElement>(null);
@@ -44,23 +46,45 @@ const AuthForm = () => {
 
   const [isLogin, setIsLogin] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
-  const [showToast, setShowToast] = useState(false);
-  const [message, setMessage] = useState("");
-  const [type, setType] = useState("");
+  const [list, setList] =  useState<IToastProps[] | []>([]);
+
 
   const switchAuthModeHandler = () => {
     setIsLogin((prevState) => !prevState);
   };
 
-  const toastHandler = () => {
-    setShowToast(false);
-  };
 
   let formIsValid = false;
   if (isLogin){
     if(emailIsValid && passwordIsValid) formIsValid = true;
   }else{
     if(nameIsValid && emailIsValid && passwordIsValid) formIsValid = true;
+  }
+
+  let toastProperties: IToastProps ;
+
+  const showToastHandler : (type:string, message:string) => void = (type,message) =>{
+    switch(type) {
+      case 'success':
+        toastProperties = {
+          id: list.length+1,
+          title: 'Success',
+          description: message,
+          backgroundColor: '#5cb85c'
+        }
+        break;
+      case 'fail':
+        toastProperties = {
+          id: list.length+1,
+          title: 'Error',
+          description: message,
+          backgroundColor: '#d9534f'
+        }
+        break;
+      default:
+        break ;
+    }
+    setList([...list, toastProperties]);
   }
 
   const submitHandler = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -93,9 +117,7 @@ const AuthForm = () => {
         // Could also use history.push('/login')
         setIsLoading(false);
         dispatch(authActions.login(response.data));
-        setMessage("Login Successful");
-        setShowToast(true);
-        setType("success");
+        showToastHandler('success','login Successful')
         setTimeout(() => {
           navigate("/");
         }, 900);
@@ -108,12 +130,8 @@ const AuthForm = () => {
       const errObj = error as AxiosError;
       const err = errObj.response?.data;
       const response = err as AxiosError;
-      setMessage(response.message);
-      setShowToast(true);
-      setType("fail");
-      setTimeout(() => {
-        setShowToast(false);
-      }, 2000);
+      showToastHandler('fail',response?.message);
+      
     }
 
     nameResetHandler();
@@ -125,14 +143,10 @@ const AuthForm = () => {
   const emailInputClasses = emailHasError ? `${classes["form-control"]} ${classes['invalid']}` : `${classes['form-control']}`;
   const passwordInputClasses = passwordHasError ? `${classes["form-control"]} ${classes['invalid']}` : `${classes['form-control']}`;
 
-  console.log(emailInputClasses);
   return (
+    <>
+    <Toast toastList={list} position='bottom-right' setList={setList} />
     <section className={classes.auth}>
-      {showToast && (
-        <Toast onClose={toastHandler} type={type}>
-          {message}
-        </Toast>
-      )}
       <h1>{isLogin ? "Login" : "Sign Up"}</h1>
       <form onSubmit={submitHandler}>
         {!isLogin && (
@@ -164,6 +178,7 @@ const AuthForm = () => {
         </div>
       </form>
     </section>
+    </>
   );
 };
 export default AuthForm;

@@ -1,44 +1,57 @@
-import React from "react";
-import ReactDOM from "react-dom";
-import classes from "./Toast.module.css";
+import { totalmem } from "os";
+import React,{useCallback, useEffect} from "react";
+import styles from "./Toast.module.css";
 
-
+export interface IToastProps {
+    id: number;
+    title: string;
+    description: string;
+    backgroundColor: string;
+  }
 
 type toastProps = {
-  onClose: () => void;
-  children: string;
-  type: string;
-};
+    toastList: IToastProps[];
+    position: string;
+    setList: React.Dispatch<React.SetStateAction<any[]>>;
+}
 
-const ModalOverlay: React.FC<toastProps> = ({ children, onClose, type }) => {
-    
-    let textColor;
-    if(type === 'success'){
-        textColor = classes.success;
-    }
-    else{
-        textColor = classes.fail;
-    }
-  return (
-    <>
-      <div className={classes.modal}>
-        <span className={textColor}>{children}</span>
-        <button onClick={onClose}>X</button>
-      </div>
-    </>
+const Toast : React.FC<toastProps> = ({ toastList, position, setList }) => {
+
+
+  const deleteToast = useCallback((id:number) => {
+      const toastListItem = toastList.filter((e) => e.id !== id);
+      setList(toastListItem);
+    },
+    [toastList, setList]
   );
-};
 
-const portalElement = document.getElementById("overlays")!;
+  useEffect(() => {
+    const interval = setInterval(() => {
+      if (toastList.length) {
+        deleteToast(toastList[0].id);
+      }
+    }, 3000);
 
-const Toast: React.FC<toastProps> = ({ children, onClose, type }) => {
+    return () => {
+      clearInterval(interval);
+    };
+  }, [toastList, deleteToast]);
   return (
-    <>
-      {ReactDOM.createPortal(
-        <ModalOverlay type={type} onClose={onClose}>{children}</ModalOverlay>,
-        portalElement
-      )}
-    </>
+    <div className={`${styles.container} ${styles[position]}`}>
+      {toastList.map((toast, i) => (
+        <div
+          key={i}
+          className={`${styles.notification} ${styles.toast} ${styles[position]}`}
+          style={{ backgroundColor: toast.backgroundColor }}
+        >
+          {toast.description==='success' ? <button onClick={() => deleteToast(toast.id)}>X</button> : null}
+          <div>
+            <p className={styles.title}>{toast.description ? toast.title : 'Error 400'}</p>
+            <p className={styles.description}>{toast.description ? toast.description : `Something Went Wrong`}</p>
+          </div>
+        </div>
+      ))}
+    </div>
   );
 };
 

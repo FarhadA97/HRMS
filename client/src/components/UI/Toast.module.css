@@ -1,44 +1,66 @@
-.backdrop {
+.container{
+    font-size: 10px;
     position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100vh;
-    z-index: 20;
-    background-color: rgba(0, 0, 0, 0.75);
-  }
-  
-  .modal {
-    position: absolute;
-    top: 20vh;
-    right: 5%;
-    width: 15rem;
-    background-color: white;
-    padding: 1rem;
-    border-radius: 14px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
-    z-index: 30;
-    animation: slide-down 300ms ease-out forwards;
-  }
-  
-.modal button{
-      background-color: rgb(236, 212, 236);
-      border-radius: 5px;
-      margin-left: 40px;
-  
+    z-index: 10;
 }
 
-.success{
-    color: green;
+.bottom-right{
+    top: 1rem;
+    right: 1rem;
+    animation: toast-right .7s;
 }
 
-.fail{
-    color: red;
+.notification{
+    margin-bottom: 1rem;
+    border-radius: 4px;
+    box-shadow: 0 0 10px #999;
+    color: #000;
+    opacity: 0.9;
+    transition: .3s ease;
 }
-  
-  /* @media (min-width: 768px) {
-    .modal {
-      width: 15rem;
-      left: calc(50% - -30rem);
+
+.notification:hover{
+    box-shadow: 0 0 12px #fff;
+}
+
+.toast{
+    height: auto;
+    width: 350px;
+    color: #fff;
+    padding: 20px 15px 10px 10px;
+}
+
+.container button{
+    float: right;
+    background: none;
+    border: none;
+    color: #fff;
+    opacity: 0.8;
+    cursor: pointer;
+}
+
+.title{
+    font-weight: 100;
+    font-size: 20px;
+    text-align: left;
+    margin-top: 0;
+    margin-bottom: 6px;
+    width: 300px;
+    height: 18px;
+}
+
+.description{
+    margin: 5 0 0 0;
+    font-size: 16px;
+    text-align: left;
+}
+
+@keyframes toast-right {
+    from{
+        transform: translateX(100%);
     }
-  } */
+    to{
+        transform: translate(0);
+    }
+}
+
