@@ -1,4 +1,3 @@
-import { totalmem } from "os";
 import React,{useCallback, useEffect} from "react";
 import styles from "./Toast.module.css";
 
