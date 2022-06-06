@@ -7,9 +7,10 @@ import useInput, { IUserInput } from "../../hooks/use-input";
 import classes from "./AuthForm.module.css";
 import { toastActions } from "../../store/toast";
 import { Title } from "../../store/toast";
+import { loginURL, registerURL } from "../../config";
 
 const AuthForm = () => {
-  
+
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
 
@@ -69,9 +70,9 @@ const AuthForm = () => {
     setIsLoading(true);
     let url;
     if (isLogin) {
-      url = "http://localhost:9000/user/login";
+      url = loginURL;
     } else {
-      url = "http://localhost:9000/user/register";
+      url = registerURL;
     }
     try {
       const response = await Axios({
@@ -90,19 +91,15 @@ const AuthForm = () => {
         dispatch(authActions.login(response.data));
         dispatch(toastActions.showToast({type: Title.SUCCESS , message: 'Login Successful'}))
         navigate('/')
-        // setTimeout(() => {
-        //   navigate("/");
-        // }, 900);
       } else {
         setIsLoading(false);
-        console.log("unspecified");
       }
     } catch (error) {
       setIsLoading(false);
       const errObj = error as AxiosError;
       const err = errObj.response?.data;
       const response = err as AxiosError;
-      dispatch(toastActions.showToast({type: Title.FAIL , message: response?.message}))
+      dispatch(toastActions.showToast({type: Title.ERROR , message: response?.message}))
       
     }
 
