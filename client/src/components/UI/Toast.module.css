@@ -4,7 +4,7 @@
     z-index: 10;
 }
 
-.bottom-right{
+.top-right{
     top: 1rem;
     right: 1rem;
     animation: toast-right .7s;

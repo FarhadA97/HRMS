@@ -4,17 +4,14 @@ import { useNavigate } from "react-router-dom";
 import Axios, { AxiosError } from "axios";
 import { authActions } from "../../store/auth";
 import useInput, { IUserInput } from "../../hooks/use-input";
-import Toast from "../UI/Toast";
 import classes from "./AuthForm.module.css";
-import { IToastProps } from "../UI/Toast";
+import { toastActions } from "../../store/toast";
+import { Title } from "../../store/toast";
 
 const AuthForm = () => {
+  
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
-  
-  // const nameInputRef = useRef<HTMLInputElement>(null);
-  // const emailInputRef = useRef<HTMLInputElement>(null);
-  // const passwordInputRef = useRef<HTMLInputElement>(null);
 
   const {
     value: name,
@@ -46,7 +43,6 @@ const AuthForm = () => {
 
   const [isLogin, setIsLogin] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
-  const [list, setList] =  useState<IToastProps[] | []>([]);
 
 
   const switchAuthModeHandler = () => {
@@ -61,31 +57,6 @@ const AuthForm = () => {
     if(nameIsValid && emailIsValid && passwordIsValid) formIsValid = true;
   }
 
-  let toastProperties: IToastProps ;
-
-  const showToastHandler : (type:string, message:string) => void = (type,message) =>{
-    switch(type) {
-      case 'success':
-        toastProperties = {
-          id: list.length+1,
-          title: 'Success',
-          description: message,
-          backgroundColor: '#5cb85c'
-        }
-        break;
-      case 'fail':
-        toastProperties = {
-          id: list.length+1,
-          title: 'Error',
-          description: message,
-          backgroundColor: '#d9534f'
-        }
-        break;
-      default:
-        break ;
-    }
-    setList([...list, toastProperties]);
-  }
 
   const submitHandler = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -117,10 +88,11 @@ const AuthForm = () => {
         // Could also use history.push('/login')
         setIsLoading(false);
         dispatch(authActions.login(response.data));
-        showToastHandler('success','login Successful')
-        setTimeout(() => {
-          navigate("/");
-        }, 900);
+        dispatch(toastActions.showToast({type: Title.SUCCESS , message: 'Login Successful'}))
+        navigate('/')
+        // setTimeout(() => {
+        //   navigate("/");
+        // }, 900);
       } else {
         setIsLoading(false);
         console.log("unspecified");
@@ -130,7 +102,7 @@ const AuthForm = () => {
       const errObj = error as AxiosError;
       const err = errObj.response?.data;
       const response = err as AxiosError;
-      showToastHandler('fail',response?.message);
+      dispatch(toastActions.showToast({type: Title.FAIL , message: response?.message}))
       
     }
 
@@ -145,7 +117,6 @@ const AuthForm = () => {
 
   return (
     <>
-    <Toast toastList={list} position='bottom-right' setList={setList} />
     <section className={classes.auth}>
       <h1>{isLogin ? "Login" : "Sign Up"}</h1>
       <form onSubmit={submitHandler}>

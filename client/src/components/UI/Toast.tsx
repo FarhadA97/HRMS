@@ -1,4 +1,6 @@
 import React,{useCallback, useEffect} from "react";
+import { toastActions } from "../../store/toast";
+import { useDispatch } from "react-redux";
 import styles from "./Toast.module.css";
 
 export interface IToastProps {
@@ -6,22 +8,21 @@ export interface IToastProps {
     title: string;
     description: string;
     backgroundColor: string;
-  }
+}
 
 type toastProps = {
     toastList: IToastProps[];
     position: string;
-    setList: React.Dispatch<React.SetStateAction<any[]>>;
 }
 
-const Toast : React.FC<toastProps> = ({ toastList, position, setList }) => {
+const Toast : React.FC<toastProps> = ({ toastList, position }) => {
 
-
+  const dispatch = useDispatch();
   const deleteToast = useCallback((id:number) => {
       const toastListItem = toastList.filter((e) => e.id !== id);
-      setList(toastListItem);
+      dispatch(toastActions.removeToast(toastListItem));
     },
-    [toastList, setList]
+    [toastList,dispatch]
   );
 
   useEffect(() => {
@@ -29,7 +30,7 @@ const Toast : React.FC<toastProps> = ({ toastList, position, setList }) => {
       if (toastList.length) {
         deleteToast(toastList[0].id);
       }
-    }, 3000);
+    }, 9000);
 
     return () => {
       clearInterval(interval);
@@ -43,7 +44,7 @@ const Toast : React.FC<toastProps> = ({ toastList, position, setList }) => {
           className={`${styles.notification} ${styles.toast} ${styles[position]}`}
           style={{ backgroundColor: toast.backgroundColor }}
         >
-          {toast.description==='success' ? <button onClick={() => deleteToast(toast.id)}>X</button> : null}
+          {toast.description !=='success' ? <button onClick={() => deleteToast(toast.id)}>X</button> : null}
           <div>
             <p className={styles.title}>{toast.description ? toast.title : 'Error 400'}</p>
             <p className={styles.description}>{toast.description ? toast.description : `Something Went Wrong`}</p>
