@@ -3,8 +3,8 @@ import { IToastProps } from "../components/UI/Toast";
 
 
 export enum Title{
-    SUCCESS = "success",
-    FAIL = "fail",
+    SUCCESS = "Success",
+    ERROR = "Error",
 }
 
 declare interface IPayload{
@@ -25,7 +25,7 @@ const toastSlice = createSlice({
         showToast(state,action: PayloadAction<IPayload>){
             console.log('showtoast ran')
             switch(action.payload.type) {
-                case 'success':
+                case 'Success':
                   toastProperties = {
                     id: state.toastProp.length+1,
                     title: Title.SUCCESS,
@@ -33,10 +33,10 @@ const toastSlice = createSlice({
                     backgroundColor: '#5cb85c'
                   }
                   break;
-                case 'fail':
+                case 'Error':
                   toastProperties = {
                     id: state.toastProp.length+1,
-                    title: Title.FAIL,
+                    title: Title.ERROR,
                     description: action.payload.message,
                     backgroundColor: '#d9534f'
                   }

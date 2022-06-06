@@ -30,7 +30,7 @@ const Toast : React.FC<toastProps> = ({ toastList, position }) => {
       if (toastList.length) {
         deleteToast(toastList[0].id);
       }
-    }, 9000);
+    }, 3000);
 
     return () => {
       clearInterval(interval);
