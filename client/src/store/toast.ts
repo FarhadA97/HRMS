@@ -23,7 +23,6 @@ const toastSlice = createSlice({
     initialState:  initialToastState,
     reducers:{
         showToast(state,action: PayloadAction<IPayload>){
-            console.log('showtoast ran')
             switch(action.payload.type) {
                 case 'Success':
                   toastProperties = {

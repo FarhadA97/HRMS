@@ -19,24 +19,6 @@
     margin-bottom: 0.5rem;
   }
   
-  .control label {
-    display: block;
-    color: white;
-    font-weight: bold;
-    margin-bottom: 0.5rem;
-  }
-  
-  .control input {
-    font: inherit;
-    background-color: #f1e1fc;
-    color: #38015c;
-    border-radius: 4px;
-    border: 1px solid white;
-    width: 100%;
-    text-align: left;
-    padding: 0.25rem;
-  }
-  
   .actions {
     margin-top: 1.5rem;
     display: flex;
@@ -78,58 +60,6 @@
   .actions .toggle:hover {
     background-color: transparent;
     color: #ae82cc;
-  }
-
-  .form-control {
-    margin-bottom: 1rem;
-  }
-  
-  .form-control input,
-  .form-control label {
-    display: block;
-  }
-  
-  .form-control label {
-    font-weight: bold;
-    margin-bottom: 0.5rem;
-  }
-  
-  .form-control input{
-    font: inherit;
-    background-color: #f1e1fc;
-    color: #38015c;
-    border-radius: 4px;
-    border: 1px solid white;
-    width: 100%;
-    text-align: left;
-    padding: 0.25rem;
-  }
-  
-  .form-control input:focus {
-    outline: none;
-    border-color: #240370;
-    background-color: #e0d4fd;
-  }
-  
-  .control-group {
-    display: flex;
-    column-gap: 1rem;
-    flex-wrap: wrap;
-  }
-  
-  .control-group .form-control {
-    min-width: 15rem;
-    flex: 1;
-  }
-
-  .invalid input {
-    border: 1px solid #b40e0e;
-    background-color: #fddddd;
-  }
-  
-  .invalid input:focus {
-    border-color: #ff8800;
-    background-color: #fbe8d2;
   }
   
   .error-text {
