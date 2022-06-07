@@ -1,7 +1,6 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useAppDispatch } from "../../store/hook";
 import { useNavigate } from "react-router-dom";
-import Axios, { AxiosError } from "axios";
 import { authActions } from "../../store/auth";
 import useInput, { IUserInput } from "../../hooks/use-input";
 import Input from "../UI/Input";
@@ -9,11 +8,12 @@ import { toastActions } from "../../store/toast";
 import { Title } from "../../store/toast";
 import { loginURL, registerURL } from "../../config";
 import classes from "./AuthForm.module.css";
+import useHttp from "../../hooks/use-http";
 
 const AuthForm = () => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
-
+  const { isLoading, errorMessage, errCount, data, sendRequest: signIn } = useHttp();
   const {
     value: name,
     isValid: nameIsValid,
@@ -42,7 +42,6 @@ const AuthForm = () => {
   }: IUserInput = useInput((value: string) => value.trim() !== "");
 
   const [isLogin, setIsLogin] = useState(true);
-  const [isLoading, setIsLoading] = useState(false);
 
   const switchAuthModeHandler = () => {
     setIsLogin((prevState) => !prevState);
@@ -58,60 +57,56 @@ const AuthForm = () => {
   const submitHandler = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    // Add validation
     if (!formIsValid) {
       return;
     }
 
-    setIsLoading(true);
-    let url;
+    let url: string;
     if (isLogin) {
       url = loginURL;
     } else {
       url = registerURL;
     }
-    try {
-      const response = await Axios({
-        method: "POST",
-        url: url,
-        data: {
-          name,
-          email,
-          password,
-        },
-      });
 
-      if (response.status === 200) {
-        // Could also use history.push('/login')
-        setIsLoading(false);
-        dispatch(authActions.login(response.data));
-        dispatch(
-          toastActions.showToast({
-            type: Title.SUCCESS,
-            message: "Login Successful",
-          })
-        );
-        navigate("/");
-      } else {
-        setIsLoading(false);
-      }
-    } catch (error) {
-      setIsLoading(false);
-      const errObj = error as AxiosError;
-      const err = errObj.response?.data;
-      const response = err as AxiosError;
-      dispatch(
-        toastActions.showToast({
-          type: Title.ERROR,
-          message: response?.message,
-        })
-      );
-    }
+    signIn({
+      method: "POST",
+      url: url,
+      data: {
+        name,
+        email,
+        password,
+      },
+    })
 
     nameResetHandler();
     emailResetHandler();
     passwordResetHandler();
   };
+
+  useEffect(() => {
+    console.log(errorMessage)
+    if(errorMessage?.length === 0) {
+      if(data.user.name.trim() !== ''){
+        dispatch(authActions.login(data));
+        dispatch(
+            toastActions.showToast({
+              type: Title.SUCCESS,
+              message: "Login Successful",
+            })
+          );
+      }
+      navigate('/');
+      
+    }
+    else{
+      dispatch(
+            toastActions.showToast({
+              type: Title.ERROR,
+              message: errorMessage,
+            })
+          );
+    }
+  },[errCount,errorMessage,data,dispatch,navigate])
 
   return (
     <>
@@ -130,23 +125,23 @@ const AuthForm = () => {
             />
           )}
           <Input
-              type="text"
-              id="name"
-              value={email}
-              onChange={emailChangeHandler}
-              onBlur={emailBlurHandler}
-              labelText="Email"
-              hasError={emailHasError}
-            />
+            type="text"
+            id="name"
+            value={email}
+            onChange={emailChangeHandler}
+            onBlur={emailBlurHandler}
+            labelText="Email"
+            hasError={emailHasError}
+          />
           <Input
-              type="password"
-              id="password"
-              value={password}
-              onChange={passwordChangeHandler}
-              onBlur={passwordBlurHandler}
-              labelText="Password"
-              hasError={passwordHasError}
-            />
+            type="password"
+            id="password"
+            value={password}
+            onChange={passwordChangeHandler}
+            onBlur={passwordBlurHandler}
+            labelText="Password"
+            hasError={passwordHasError}
+          />
           <div className={classes.actions}>
             {!isLoading && (
               <button disabled={!formIsValid}>

@@ -7,7 +7,7 @@ declare interface IUser{
 
 }
 
-declare interface IPayload{
+export interface IPayload{
     user: IUser;
     token: string;
 }
