@@ -26,7 +26,7 @@ const App = () => {
       <Routes>
         <Route path="/" element={ isLoggedIn ? <HomePage/> : <AuthPage/>} />
         {!isLoggedIn && <Route path="/login" element={<AuthPage/>} />}
-        <Route path='*' element={<HomePage/>} />
+        <Route path='*' element={ isLoggedIn ? <HomePage/> : <AuthPage/>} />
       </Routes>
     </Layout>
     </>
