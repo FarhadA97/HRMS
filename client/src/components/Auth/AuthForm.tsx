@@ -1,14 +1,15 @@
 import { useEffect, useState } from "react";
-import { useAppDispatch } from "../../store/hook";
 import { useNavigate } from "react-router-dom";
-import { authActions } from "../../store/auth";
+import { useAppDispatch } from "../../store/hook";
 import useInput, { IUserInput } from "../../hooks/use-input";
-import Input from "../UI/Input";
+import useHttp from "../../hooks/use-http";
+import { authActions } from "../../store/auth";
 import { toastActions } from "../../store/toast";
 import { Title } from "../../store/toast";
+import Input from "../UI/Input";
+import Button from "../UI/Button";
 import { loginURL, registerURL } from "../../config";
 import classes from "./AuthForm.module.css";
-import useHttp from "../../hooks/use-http";
 
 const AuthForm = () => {
   const navigate = useNavigate();
@@ -142,19 +143,17 @@ const AuthForm = () => {
             hasError={passwordHasError}
           />
           <div className={classes.actions}>
-            {!isLoading && (
-              <button disabled={!formIsValid}>
-                {isLogin ? "Login" : "Create Account"}
-              </button>
+            {!isLoading && (  
+              <Button classText="login" disabled={!formIsValid}> {isLogin ? "Login" : "Create Account"} </Button>
             )}
             {isLoading && <p>Sending request...</p>}
-            <button
+            <Button
               type="button"
-              className={classes.toggle}
+              classText="toggle"
               onClick={switchAuthModeHandler}
             >
               {isLogin ? "Create new account" : "Login with existing account"}
-            </button>
+            </Button>
           </div>
         </form>
       </section>
