@@ -84,7 +84,6 @@ const AuthForm = () => {
   };
 
   useEffect(() => {
-    console.log(errorMessage)
     if(errorMessage?.length === 0) {
       if(data.user.name.trim() !== ''){
         dispatch(authActions.login(data));

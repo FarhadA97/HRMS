@@ -26,10 +26,10 @@ const useHttp = () => {
     const [isLoading, setIsLoading] = useState(false);
     const [errorMessage, setErrorMessage] = useState('');
     const [errCount, setErrCount] = useState(0);
-    //console.log("http=",errorMessage);
+    
     const [data, setData] = useState<NonNullable<IPayload>>({user:emptyUser,token:''});
     const sendRequest : (requestConfig:IConfig) => void =  async (requestConfig) => {
-        //console.log(requestConfig)
+       
         setIsLoading(true);
         try {
           const response = await Axios({
