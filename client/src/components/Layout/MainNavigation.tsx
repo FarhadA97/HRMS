@@ -14,8 +14,7 @@ const MainNavigation = () => {
   const logoutHandler = () => {
      dispatch(authActions.logout());
      navigate('/login');
-     navigate(0);
-    // optional: redirect the user
+     
   };
 
   return (
