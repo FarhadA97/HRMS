@@ -1,18 +1,13 @@
 import axios from 'axios';
 
-const apiRoot = 'http://localhost:9000/';
+const apiRoot = process.env.REACT_APP_BASE_URL!;
 
-/**
- * Create an Axios Client with baseURL as default
- */
+
 const client = axios.create({
   baseURL: apiRoot,
 });
 
-/**
- * A lightweight wrapper for axios - a Promise based HTTP client for the browser and node.js
- * see https://github.com/axios/axios#request-config for config options
- */
+
 const request = async (options: {}) => {
   const onSuccess = (response: {}) => {
     return response;
