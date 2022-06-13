@@ -1,8 +1,8 @@
-import { useEffect, useState } from "react";
+import {useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAppDispatch } from "../../store/hook";
 import useInput, { IUserInput } from "../../hooks/use-input";
-import useHttp from "../../hooks/use-http";
+import { register,login } from "../../service/auth-service";
 import { authActions } from "../../store/auth";
 import { toastActions } from "../../store/toast";
 import { Title } from "../../store/toast";
@@ -14,7 +14,7 @@ import classes from "./AuthForm.module.css";
 const AuthForm = () => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
-  const { isLoading, errorMessage, errCount, data, sendRequest: signIn } = useHttp();
+  const [isLoading, setIsLoading] = useState(false);
   const {
     value: name,
     isValid: nameIsValid,
@@ -56,57 +56,39 @@ const AuthForm = () => {
   }
 
   const submitHandler = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
+    e.preventDefault(); 
+    setIsLoading(true);
 
     if (!formIsValid) {
       return;
     }
 
+    let response;
     let url: string;
     if (isLogin) {
       url = loginURL;
-    } else {
-      url = registerURL;
+      response = await login(url, {email,password});
+    }else {
+      url = registerURL
+      response = await register(url, {name,email,password});   
+    }
+    setIsLoading(false);
+    if(response.status !== 200) {
+      dispatch(toastActions.showToast({type: Title.ERROR, message: response.data.message}))
+      return;
     }
 
-    signIn({
-      method: "POST",
-      url: url,
-      data: {
-        name,
-        email,
-        password,
-      },
-    })
+    dispatch(authActions.login(response.data));
+    dispatch(toastActions.showToast({type: Title.SUCCESS, message: 'User Logged in'}))
+    navigate('/');
+    
 
     nameResetHandler();
     emailResetHandler();
     passwordResetHandler();
   };
 
-  useEffect(() => {
-    if(errorMessage?.length === 0) {
-      if(data.user.name.trim() !== ''){
-        dispatch(authActions.login(data));
-        dispatch(
-            toastActions.showToast({
-              type: Title.SUCCESS,
-              message: "Login Successful",
-            })
-          );
-      }
-      navigate('/');
-      
-    }
-    else{
-      dispatch(
-            toastActions.showToast({
-              type: Title.ERROR,
-              message: errorMessage,
-            })
-          );
-    }
-  },[errCount,errorMessage,data,dispatch,navigate])
+  
 
   return (
     <>
