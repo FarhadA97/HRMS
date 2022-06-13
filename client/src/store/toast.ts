@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { IToastProps } from "../components/UI/Toast";
-
+import {Type} from '../config/index'
 
 export enum Title{
     SUCCESS = "Success",
@@ -24,7 +24,7 @@ const toastSlice = createSlice({
     reducers:{
         showToast(state,action: PayloadAction<IPayload>){
             switch(action.payload.type) {
-                case 'Success':
+                case Type.SUCCESS:
                   toastProperties = {
                     id: state.toastProp.length+1,
                     title: Title.SUCCESS,
@@ -32,7 +32,7 @@ const toastSlice = createSlice({
                     backgroundColor: '#5cb85c'
                   }
                   break;
-                case 'Error':
+                case Type.ERROR:
                   toastProperties = {
                     id: state.toastProp.length+1,
                     title: Title.ERROR,
@@ -46,8 +46,9 @@ const toastSlice = createSlice({
             
             state.toastProp = [...state.toastProp,toastProperties];
         },
-        removeToast(state,action: PayloadAction<IToastProps[]>){
-            state.toastProp = action.payload;
+        removeToast(state,action: PayloadAction<number>){
+            state.toastProp = state.toastProp.filter((e) => e.id !== action.payload);
+            
         }   
     }
 })

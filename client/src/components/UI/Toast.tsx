@@ -19,10 +19,10 @@ const Toast : React.FC<toastProps> = ({ toastList, position }) => {
 
   const dispatch = useDispatch();
   const deleteToast = useCallback((id:number) => {
-      const toastListItem = toastList.filter((e) => e.id !== id);
-      dispatch(toastActions.removeToast(toastListItem));
+      
+      dispatch(toastActions.removeToast(id));
     },
-    [toastList,dispatch]
+    [dispatch]
   );
 
   useEffect(() => {
@@ -38,13 +38,13 @@ const Toast : React.FC<toastProps> = ({ toastList, position }) => {
   }, [toastList, deleteToast]);
   return (
     <div className={`${styles.container} ${styles[position]}`}>
-      {toastList.map((toast, i) => (
+      {toastList.map((toast) => (
         <div
-          key={i}
+          key={toast.id}
           className={`${styles.notification} ${styles.toast} ${styles[position]}`}
           style={{ backgroundColor: toast.backgroundColor }}
         >
-          {toast.description !=='success' ? <button onClick={() => deleteToast(toast.id)}>X</button> : null}
+          <button onClick={() => deleteToast(toast.id)}>X</button>
           <div>
             <p className={styles.title}>{toast.description ? toast.title : 'Error 400'}</p>
             <p className={styles.description}>{toast.description ? toast.description : `Something Went Wrong`}</p>
