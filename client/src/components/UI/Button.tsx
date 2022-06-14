@@ -4,7 +4,7 @@ import classes from './Button.module.css'
 declare interface ButtonProps {
   children?: string| string[];
   type?: "submit" | "reset" | "button";
-  classText: string;
+  className: string;
   disabled?: boolean;
   onClick?: () => void;
 }
@@ -12,11 +12,11 @@ declare interface ButtonProps {
 const Button: React.FC<ButtonProps> = ({
   children,
   type,
-  classText,
+  className,
   disabled,
   onClick,
 }) => {
-    const btnClass = `${classes[classText]}`
+  const btnClass = `${classes[className]}`
   return (
     <button
       type={type}
