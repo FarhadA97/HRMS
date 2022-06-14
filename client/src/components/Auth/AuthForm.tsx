@@ -1,8 +1,8 @@
-import {useState } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAppDispatch } from "../../store/hook";
 import useInput, { IUserInput } from "../../hooks/use-input";
-import { register,login } from "../../service/auth-service";
+import { register, login } from "../../service/auth-service";
 import { authActions } from "../../store/auth";
 import { toastActions } from "../../store/toast";
 import { Title } from "../../store/toast";
@@ -56,7 +56,7 @@ const AuthForm = () => {
   }
 
   const submitHandler = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault(); 
+    e.preventDefault();
     setIsLoading(true);
 
     if (!formIsValid) {
@@ -67,28 +67,32 @@ const AuthForm = () => {
     let url: string;
     if (isLogin) {
       url = loginURL;
-      response = await login(url, {email,password});
-    }else {
-      url = registerURL
-      response = await register(url, {name,email,password});   
+      response = await login(url, { email, password });
+    } else {
+      url = registerURL;
+      response = await register(url, { name, email, password });
     }
     setIsLoading(false);
-    if(response.status !== 200) {
-      dispatch(toastActions.showToast({type: Title.ERROR, message: response.data.message}))
+    if (response.status !== 200) {
+      dispatch(
+        toastActions.showToast({
+          type: Title.ERROR,
+          message: response.data.message,
+        })
+      );
       return;
     }
 
     dispatch(authActions.login(response.data));
-    dispatch(toastActions.showToast({type: Title.SUCCESS, message: 'User Logged in'}))
-    navigate('/');
-    
+    dispatch(
+      toastActions.showToast({ type: Title.SUCCESS, message: "User Logged in" })
+    );
+    navigate("/");
 
     nameResetHandler();
     emailResetHandler();
     passwordResetHandler();
   };
-
-  
 
   return (
     <>
@@ -125,8 +129,11 @@ const AuthForm = () => {
             hasError={passwordHasError}
           />
           <div className={classes.actions}>
-            {!isLoading && (  
-              <Button className="login" disabled={!formIsValid}> {isLogin ? "Login" : "Create Account"} </Button>
+            {!isLoading && (
+              <Button className="login" disabled={!formIsValid}>
+                {" "}
+                {isLogin ? "Login" : "Create Account"}{" "}
+              </Button>
             )}
             {isLoading && <p>Sending request...</p>}
             <Button
