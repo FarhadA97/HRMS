@@ -26,7 +26,7 @@ const toastSlice = createSlice({
       switch (action.payload.type) {
         case Type.SUCCESS:
           toastProperties = {
-            id: state.toastProp.length + 1,
+            id: Math.random(),
             title: Title.SUCCESS,
             description: action.payload.message,
             backgroundColor: "#5cb85c",
@@ -34,7 +34,7 @@ const toastSlice = createSlice({
           break;
         case Type.ERROR:
           toastProperties = {
-            id: state.toastProp.length + 1,
+            id: Math.random(),
             title: Title.ERROR,
             description: action.payload.message,
             backgroundColor: "#d9534f",
