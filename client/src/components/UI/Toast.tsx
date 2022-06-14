@@ -1,25 +1,24 @@
-import React,{useCallback, useEffect} from "react";
+import React, { useCallback, useEffect } from "react";
 import { toastActions } from "../../store/toast";
 import { useDispatch } from "react-redux";
 import styles from "./Toast.module.css";
 
 export interface IToastProps {
-    id: number;
-    title: string;
-    description: string;
-    backgroundColor: string;
+  id: number;
+  title: string;
+  description: string;
+  backgroundColor: string;
 }
 
 type toastProps = {
-    toastList: IToastProps[];
-    position: string;
-}
+  toastList: IToastProps[];
+  position: string;
+};
 
-const Toast : React.FC<toastProps> = ({ toastList, position }) => {
-
+const Toast: React.FC<toastProps> = ({ toastList, position }) => {
   const dispatch = useDispatch();
-  const deleteToast = useCallback((id:number) => {
-      
+  const deleteToast = useCallback(
+    (id: number) => {
       dispatch(toastActions.removeToast(id));
     },
     [dispatch]
@@ -46,8 +45,12 @@ const Toast : React.FC<toastProps> = ({ toastList, position }) => {
         >
           <button onClick={() => deleteToast(toast.id)}>X</button>
           <div>
-            <p className={styles.title}>{toast.description ? toast.title : 'Error 400'}</p>
-            <p className={styles.description}>{toast.description ? toast.description : `Something Went Wrong`}</p>
+            <p className={styles.title}>
+              {toast.description ? toast.title : "Error 400"}
+            </p>
+            <p className={styles.description}>
+              {toast.description ? toast.description : `Something Went Wrong`}
+            </p>
           </div>
         </div>
       ))}
