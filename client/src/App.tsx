@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Route, Routes, useLocation } from "react-router-dom";
+import { Navigate, Route, Routes, useLocation } from "react-router-dom";
 import Layout from "./components/Layout/Layout";
 import HomePage from "./pages/HomePage";
 import AuthPage from "./pages/AuthPage";
@@ -22,9 +22,9 @@ const App = () => {
       <Toast toastList={list} position="top-right" />
       <Layout>
         <Routes>
-          <Route path="/" element={isLoggedIn ? <HomePage /> : <AuthPage />} />
+          <Route path="/" element={isLoggedIn ? <HomePage /> : <Navigate to='/login' replace/>} />
           {!isLoggedIn && <Route path="/login" element={<AuthPage />} />}
-          <Route path="*" element={isLoggedIn ? <HomePage /> : <AuthPage />} />
+          <Route path="*" element={isLoggedIn ? <Navigate to='/'/> : <Navigate to='/login' replace/>} />
         </Routes>
       </Layout>
     </>
