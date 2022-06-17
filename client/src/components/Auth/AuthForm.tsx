@@ -1,20 +1,14 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { useAppDispatch } from "../../store/hook";
+import { useAppSelector } from "../../store/hook";
 import useInput, { IUserInput } from "../../hooks/use-input";
-import { register, login } from "../../service/auth-service";
-import { authActions } from "../../store/auth";
-import { toastActions } from "../../store/toast";
-import { Title } from "../../store/toast";
 import Input from "../UI/Input";
 import Button from "../UI/Button";
-import { loginURL, registerURL } from "../../config";
+import { User } from "../../config";
 import classes from "./AuthForm.module.css";
 
-const AuthForm = () => {
-  const navigate = useNavigate();
-  const dispatch = useAppDispatch();
-  const [isLoading, setIsLoading] = useState(false);
+const AuthForm:React.FC<{onLogin: (isLogin:boolean,data:User) => void }> = ({onLogin}) => {
+
+  const isLoading = useAppSelector(state => state.auth.loading);
   const {
     value: name,
     isValid: nameIsValid,
@@ -57,37 +51,13 @@ const AuthForm = () => {
 
   const submitHandler = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    setIsLoading(true);
 
+    const data: User = { name, email, password };
     if (!formIsValid) {
       return;
     }
-
-    let response;
-    let url: string;
-    if (isLogin) {
-      url = loginURL;
-      response = await login(url, { email, password });
-    } else {
-      url = registerURL;
-      response = await register(url, { name, email, password });
-    }
-    setIsLoading(false);
-    if (response.status !== 200) {
-      dispatch(
-        toastActions.showToast({
-          type: Title.ERROR,
-          message: response.data.message,
-        })
-      );
-      return;
-    }
-
-    dispatch(authActions.login(response.data));
-    dispatch(
-      toastActions.showToast({ type: Title.SUCCESS, message: "User Logged in" })
-    );
-    navigate("/");
+  
+    onLogin(isLogin,data);
 
     nameResetHandler();
     emailResetHandler();
