@@ -5,3 +5,9 @@ export enum Type {
   SUCCESS = "Success",
   ERROR = "Error",
 }
+
+export interface User{
+  name?: string;
+  email: string;
+  password: string
+}
