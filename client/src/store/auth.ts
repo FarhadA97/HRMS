@@ -1,4 +1,7 @@
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import axios from "axios";
+import { User } from "../config";
+import { Title, toastActions } from "./toast";
 
 declare interface IUser {
   name: string;
@@ -14,28 +17,71 @@ export interface IPayload {
 export interface AuthState {
   authData: IUser | null;
   isLoggedIn: boolean;
+  loading: boolean;
+  errors: any;
 }
 
 const initialAuthState: AuthState = {
   authData: null,
   isLoggedIn: false,
+  loading: false,
+  errors: null,
 };
+
+export const login = createAsyncThunk<IPayload, { data: User; url: string }>(
+  "auth/login",
+  async ({ data, url }, thunkAPI) => {
+    try {
+      const response = await axios.post(url, data);
+      localStorage.setItem("user", JSON.stringify(response.data.user));
+      localStorage.setItem("token", JSON.stringify(response.data.token));
+      thunkAPI.dispatch(
+        toastActions.showToast({
+          type: Title.SUCCESS,
+          message: "User Logged in",
+        })
+      );
+      return response.data;
+    } catch (err) {
+      const hasErrResponse = (
+        err as { response: { [key: string]: { message: string } } }
+      ).response;
+      if (!hasErrResponse) {
+        throw err;
+      }
+      thunkAPI.dispatch(
+        toastActions.showToast({
+          type: Title.ERROR,
+          message: hasErrResponse.data.message,
+        })
+      );
+      return thunkAPI.rejectWithValue(hasErrResponse);
+    }
+  }
+);
 
 const authSlice = createSlice({
   name: "auth",
   initialState: initialAuthState,
   reducers: {
-    login(state, action: PayloadAction<IPayload>) {
-      localStorage.setItem("user", JSON.stringify(action.payload.user));
-      localStorage.setItem("token", JSON.stringify(action.payload.token));
-      state.authData = action.payload.user;
-      state.isLoggedIn = true;
-    },
     logout(state) {
       localStorage.clear();
       state.authData = null;
       state.isLoggedIn = false;
     },
+  },
+  extraReducers: (builder) => {
+    builder.addCase(login.pending,(state) => {
+      state.loading = true;
+    })
+    builder.addCase(login.fulfilled, (state, action) => {
+      state.authData = action.payload.user;
+      state.loading = false;
+    });
+    builder.addCase(login.rejected, (state, action) => {
+      state.loading = false;
+      state.errors = action.payload;
+    });
   },
 });
 
