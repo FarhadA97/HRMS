@@ -17,3 +17,9 @@ h5,
 h6 {
   font-family: 'Lato', sans-serif;
 }
+
+.formik-error {
+  position: absolute;
+  color: rgb(255, 63, 63);
+  font-size: .9rem;
+}

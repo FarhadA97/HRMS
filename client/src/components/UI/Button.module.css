@@ -1,4 +1,4 @@
-.login {
+.submit {
     cursor: pointer;
     font: inherit;
     color: white;
@@ -8,14 +8,14 @@
     padding: 0.5rem 2.5rem;
   }
   
-.login:hover {
+.submit:hover {
     background-color: #873abb;
     border-color: #873abb;
   }
 
-.login:disabled,
-.login:disabled:hover,
-.login:disabled:active {
+.submit:disabled,
+.submit:disabled:hover,
+.submit:disabled:active {
   background-color: #ccc;
   color: #656262;
   border-color: #ccc;
