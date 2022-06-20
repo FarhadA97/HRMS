@@ -1,122 +1,113 @@
 import { useState } from "react";
 import { useAppSelector } from "../../store/hook";
-import useInput, { IUserInput } from "../../hooks/use-input";
-import Input from "../UI/Input";
+import { Formik, Form } from "formik";
+import * as Yup from "yup";
 import Button from "../UI/Button";
 import { User } from "../../config";
 import classes from "./AuthForm.module.css";
+import TextField from "../UI/TextField";
 
-const AuthForm:React.FC<{onLogin: (isLogin:boolean,data:User) => void }> = ({onLogin}) => {
+interface authFormProps {
+  hideName: boolean;
+  name: string;
+  email: string;
+  password: string;
+}
 
-  const isLoading = useAppSelector(state => state.auth.loading);
-  const {
-    value: name,
-    isValid: nameIsValid,
-    hasError: nameHasError,
-    valueChangeHandler: nameChangeHandler,
-    valueBlurHandler: nameBlurHandler,
-    reset: nameResetHandler,
-  }: IUserInput = useInput((value: string) => value.trim() !== "");
-
-  const {
-    value: email,
-    isValid: emailIsValid,
-    hasError: emailHasError,
-    valueChangeHandler: emailChangeHandler,
-    valueBlurHandler: emailBlurHandler,
-    reset: emailResetHandler,
-  }: IUserInput = useInput((value: string) => value.includes("@"));
-
-  const {
-    value: password,
-    isValid: passwordIsValid,
-    hasError: passwordHasError,
-    valueChangeHandler: passwordChangeHandler,
-    valueBlurHandler: passwordBlurHandler,
-    reset: passwordResetHandler,
-  }: IUserInput = useInput((value: string) => value.trim() !== "");
-
+const AuthForm: React.FC<{
+  onLogin: (isLogin: boolean, data: User) => void;
+}> = ({ onLogin }) => {
   const [isLogin, setIsLogin] = useState(true);
+  const isLoading = useAppSelector((state) => state.auth.loading);
+
+  const initialAuthFormValues: authFormProps = {
+    hideName: isLogin,
+    name: "",
+    email: "",
+    password: "",
+  };
+  
+  const authFormValidationSchema = Yup.object({
+    name: isLogin
+          ? Yup.string()
+          : Yup.string().required("*Name is required"),
+
+    email: Yup.string()
+      .email("*Email is not valid")
+      .required("Email is required"),
+
+    password: Yup.string()
+      .min(4, "*Password must be atleast 5 characters long.")
+      .required("Password is required"),
+  });
 
   const switchAuthModeHandler = () => {
     setIsLogin((prevState) => !prevState);
   };
 
-  let formIsValid = false;
-  if (isLogin) {
-    if (emailIsValid && passwordIsValid) formIsValid = true;
-  } else {
-    if (nameIsValid && emailIsValid && passwordIsValid) formIsValid = true;
-  }
+  const submitHandler = (values: authFormProps) => {
+    const data: User = {
+      name: values.name,
+      email: values.email,
+      password: values.password,
+    };
+    
 
-  const submitHandler = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-
-    const data: User = { name, email, password };
-    if (!formIsValid) {
-      return;
-    }
-  
-    onLogin(isLogin,data);
-
-    nameResetHandler();
-    emailResetHandler();
-    passwordResetHandler();
+    onLogin(isLogin, data);
   };
 
   return (
-    <>
-      <section className={classes.auth}>
-        <h1>{isLogin ? "Login" : "Sign Up"}</h1>
-        <form onSubmit={submitHandler}>
-          {!isLogin && (
-            <Input
-              type="text"
-              id="name"
-              value={name}
-              onChange={nameChangeHandler}
-              onBlur={nameBlurHandler}
-              labelText="Name"
-              hasError={nameHasError}
-            />
-          )}
-          <Input
-            type="text"
-            id="name"
-            value={email}
-            onChange={emailChangeHandler}
-            onBlur={emailBlurHandler}
-            labelText="Email"
-            hasError={emailHasError}
-          />
-          <Input
-            type="password"
-            id="password"
-            value={password}
-            onChange={passwordChangeHandler}
-            onBlur={passwordBlurHandler}
-            labelText="Password"
-            hasError={passwordHasError}
-          />
-          <div className={classes.actions}>
-            {!isLoading && (
-              <Button className="login" disabled={!formIsValid}>
-                {" "}
-                {isLogin ? "Login" : "Create Account"}{" "}
-              </Button>
+    <Formik
+      initialValues={initialAuthFormValues}
+      validationSchema={authFormValidationSchema}
+      onSubmit={submitHandler}
+    >
+      {(formik) => (
+        <section className={classes.auth}>
+          <h1>{isLogin ? "Login" : "Sign Up"}</h1>
+          <Form>
+            {!isLogin && (
+              <TextField
+                label="Name"
+                type="text"
+                name="name"
+                placeholder="Name"
+              />
             )}
-            {isLoading && <p>Sending request...</p>}
-            <Button
-              type="button"
-              className="toggle"
-              onClick={switchAuthModeHandler}
-            >
-              {isLogin ? "Create new account" : "Login with existing account"}
-            </Button>
-          </div>
-        </form>
-      </section>
-    </>
+            <TextField
+              label="Email"
+              type="text"
+              name="email"
+              placeholder="Email"
+            />
+            <TextField
+              label="Password"
+              type="password"
+              name="password"
+              placeholder="Password"
+            />
+            <div className={classes.actions}>
+              {!isLoading && (
+                <Button
+                  type="submit"
+                  className="submit"
+                >
+                  {isLogin ? "Login" : "Create Account"}
+                </Button>
+              )}
+              {isLoading && <p>Sending request...</p>}
+              <Button
+                type="reset"
+                className="toggle"
+                onClick={(switchAuthModeHandler)}
+              >
+                {isLogin ? "Create new account" : "Login with existing account"}
+              </Button>
+            </div>
+          </Form>
+        </section>
+      )}
+    </Formik>
   );
 };
 export default AuthForm;
