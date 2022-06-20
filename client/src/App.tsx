@@ -5,6 +5,7 @@ import HomePage from "./pages/HomePage";
 import AuthPage from "./pages/AuthPage";
 import Toast from "./components/UI/Toast";
 import { useAppSelector } from "./store/hook";
+import AddCandidatePage from "./pages/AddCandidatePage";
 
 const App = () => {
   const list = useAppSelector((state) => state.toast.toastProp);
@@ -23,6 +24,7 @@ const App = () => {
       <Layout>
         <Routes>
           <Route path="/" element={isLoggedIn ? <HomePage /> : <Navigate to='/login' replace/>} />
+          <Route path="/add" element={isLoggedIn ? <AddCandidatePage /> : <Navigate to='/login' replace />} />
           {!isLoggedIn && <Route path="/login" element={<AuthPage />} />}
           <Route path="*" element={isLoggedIn ? <Navigate to='/'/> : <Navigate to='/login' replace/>} />
         </Routes>
