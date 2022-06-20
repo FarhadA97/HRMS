@@ -4,6 +4,7 @@ import classes from "./CandidateForm.module.css";
 import { Formik, Form } from "formik";
 import * as Yup from "yup";
 import Button from "../../UI/Button";
+import { ICandidate } from "../../../config";
 
 interface candidateFormProps {
   name: string;
@@ -15,7 +16,7 @@ interface candidateFormProps {
   reference: string;
 }
 
-const CandidateForm: React.FC<{ onAddCandidate: (data: any) => void }> = ({
+const CandidateForm: React.FC<{ onAddCandidate: (data: ICandidate) => void }> = ({
   onAddCandidate,
 }) => {
   const initialCandidateFormValues: candidateFormProps = {
@@ -57,7 +58,15 @@ const CandidateForm: React.FC<{ onAddCandidate: (data: any) => void }> = ({
   });
 
   const submitHandler = (values: candidateFormProps) => {
-    console.log(values);
+    const data: ICandidate = {
+      name:values.name,
+      email:values.email,
+      dob:values.dob,
+      field:values.field,
+      contact:values.contact,
+      reference:values.reference
+    }
+    onAddCandidate(data);
   };
 
   return (
@@ -75,13 +84,13 @@ const CandidateForm: React.FC<{ onAddCandidate: (data: any) => void }> = ({
               label="Name"
               type="text"
               name="name"
-              placeholder="Name"
+              placeholder="name"
             />
             <TextField
               label="Email"
               type="text"
               name="email"
-              placeholder="Email"
+              placeholder="something@mail.com"
             />
             <TextField
               label="Date of Birth"
@@ -93,23 +102,26 @@ const CandidateForm: React.FC<{ onAddCandidate: (data: any) => void }> = ({
               label="Field"
               type="text"
               name="field"
-              placeholder="Field"
+              placeholder="field"
             />
             <TextField
               label="Contact"
               type="text"
               name="contact"
-              placeholder="Contact"
+              placeholder="contact"
             />
             <TextField
               label="Reference"
               type="text"
               name="reference"
-              placeholder="Reference"
+              placeholder="reference"
             />
-            <Button className="submit" type="submit">
-              Submit
-            </Button>
+            <div className={classes.actions}>
+              <Button className="submit" type="submit">
+                Submit
+              </Button>
+            </div>
+            
           </Form>
         </section>
       )}
