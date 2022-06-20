@@ -11,3 +11,12 @@ export interface User{
   email: string;
   password: string
 }
+
+export interface ICandidate{
+  name: string;
+  email: string;
+  dob: string;
+  field: string;
+  contact: string;
+  reference: string;
+}
