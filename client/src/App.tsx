@@ -10,11 +10,15 @@ import { getCandidates } from "./store/slices/candidate";
 
 const App = () => {
   const list = useAppSelector((state) => state.toast.toastProp);
+  const isLoggedIn:boolean = useAppSelector((state) => state.auth.isLoggedIn);
   const dispatch = useAppDispatch();
  
-  const isLoggedIn:boolean = localStorage.getItem("user") ? true : false;
+  //const isLoggedIn:boolean = localStorage.getItem("user") ? true : false;
+  console.log(isLoggedIn)
+
   useEffect(() => {
     dispatch(getCandidates());
+    console.log('ran');
   }, [dispatch]);
 
   return (
@@ -24,7 +28,7 @@ const App = () => {
         <Routes>
           <Route path="/" element={isLoggedIn ? <HomePage /> : <Navigate to='/login' replace/>} />
           <Route path="/add" element={isLoggedIn ? <AddCandidatePage /> : <Navigate to='/login' replace />} />
-          {!isLoggedIn && <Route path="/login" element={<AuthPage />} />}
+          <Route path="/login" element={!isLoggedIn ? <AuthPage /> : <Navigate to='/' replace/>} />
           <Route path="*" element={isLoggedIn ? <Navigate to='/'/> : <Navigate to='/login' replace/>} />
         </Routes>
       </Layout>

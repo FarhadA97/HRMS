@@ -22,8 +22,8 @@ export interface AuthState {
 }
 
 const initialAuthState: AuthState = {
-  authData: null,
-  isLoggedIn: false,
+  authData: JSON.parse(localStorage.getItem('user')!),
+  isLoggedIn: localStorage.getItem('user') ? true : false,
   loading: false,
   errors: null,
 };
@@ -76,10 +76,12 @@ const authSlice = createSlice({
     })
     builder.addCase(login.fulfilled, (state, action) => {
       state.authData = action.payload.user;
+      state.isLoggedIn = true;
       state.loading = false;
     });
     builder.addCase(login.rejected, (state, action) => {
       state.loading = false;
+      state.isLoggedIn = false;
       state.errors = action.payload;
     });
   },
