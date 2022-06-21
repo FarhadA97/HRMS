@@ -1,22 +1,21 @@
-import { useEffect, useState } from "react";
-import { Navigate, Route, Routes, useLocation } from "react-router-dom";
+import { useEffect } from "react";
+import { Navigate, Route, Routes } from "react-router-dom";
 import Layout from "./components/Layout/Layout";
 import HomePage from "./pages/HomePage";
 import AuthPage from "./pages/AuthPage";
 import Toast from "./components/UI/Toast";
-import { useAppSelector } from "./store/hook";
+import { useAppDispatch, useAppSelector } from "./store/hook";
 import AddCandidatePage from "./pages/AddCandidatePage";
+import { getCandidates } from "./store/slices/candidate";
 
 const App = () => {
   const list = useAppSelector((state) => state.toast.toastProp);
-  const location = useLocation();
-  const [isLoggedIn, setIsLoggedIn] = useState(
-    localStorage.getItem("user") ? true : false
-  );
-
+  const dispatch = useAppDispatch();
+ 
+  const isLoggedIn:boolean = localStorage.getItem("user") ? true : false;
   useEffect(() => {
-    setIsLoggedIn(localStorage.getItem("user") ? true : false);
-  }, [location]);
+    dispatch(getCandidates());
+  }, [dispatch]);
 
   return (
     <>
