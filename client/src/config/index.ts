@@ -1,5 +1,6 @@
 export const loginURL = process.env.REACT_APP_LOGIN_URL!;
 export const registerURL = process.env.REACT_APP_REGISTER_URL!;
+export const baseURL = process.env.REACT_APP_BASE_URL!;
 
 export enum Type {
   SUCCESS = "Success",
@@ -18,5 +19,7 @@ export interface ICandidate{
   dob: string;
   field: string;
   contact: string;
+  status?: string;
   reference: string;
+  _id?: string;
 }
