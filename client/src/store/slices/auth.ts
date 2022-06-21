@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
-import { User } from "../config";
+import { User } from "../../config";
 import { Title, toastActions } from "./toast";
 
 declare interface IUser {

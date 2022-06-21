@@ -1,7 +1,7 @@
 import React from "react";
 import AuthForm from "../components/Auth/AuthForm";
 import { User } from "../config";
-import { login } from "../store/auth";
+import { login } from "../store/slices/auth";
 import { useAppDispatch } from "../store/hook";
 import { useNavigate } from "react-router-dom";
 
