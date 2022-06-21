@@ -1,5 +1,6 @@
 import express, { ErrorRequestHandler } from "express";
 import userRoute from "./routes/userRoutes";
+import candidateRoute from "./routes/candidateRoutes";
 import mongoose from "mongoose";
 import { DB, PORT } from "./config";
 import cors from 'cors';
@@ -9,6 +10,7 @@ app.use(cors());
 app.use(express.json());
 
 app.use("/user", userRoute);
+app.use("/candidate", candidateRoute);
 
 
 
