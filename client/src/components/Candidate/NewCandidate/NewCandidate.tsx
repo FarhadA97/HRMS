@@ -1,18 +1,20 @@
-import React from 'react'
-import { ICandidate } from '../../../config'
-import CandidateForm from './CandidateForm'
+import React from "react";
+import { ICandidate } from "../../../config";
+import { useAppDispatch } from "../../../store/hook";
+import { addCandidate } from "../../../store/slices/candidate";
+import CandidateForm from "./CandidateForm";
 
 const NewCandidate = () => {
-
-    const addCandidateHandler = (data:ICandidate) => {
-      console.log(data)
-    }
+  const dispatch = useAppDispatch();
+  const addCandidateHandler : (data: ICandidate) => void = (data) => {
+    dispatch(addCandidate({data}));
+  };
 
   return (
     <>
-        <CandidateForm onAddCandidate={addCandidateHandler} />
+      <CandidateForm onAddCandidate={addCandidateHandler} />
     </>
-  )
-}
+  );
+};
 
-export default NewCandidate
+export default NewCandidate;
