@@ -1,6 +1,6 @@
 import React from "react";
 import AuthForm from "../components/Auth/AuthForm";
-import { loginURL, registerURL, User } from "../config";
+import { User } from "../config";
 import { login } from "../store/auth";
 import { useAppDispatch } from "../store/hook";
 import { useNavigate } from "react-router-dom";
@@ -8,9 +8,7 @@ import { useNavigate } from "react-router-dom";
 const AuthPage = () => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
-  const loginHandler: (isLogin: boolean, data: User) => void = (isLogin,data) => {
-    let url: string = loginURL;
-    if (!isLogin) url = registerURL;
+  const loginHandler: (url:string, data: User) => void = (url,data) => {
     dispatch(login({ data, url }))
       .unwrap()
       .then(() => {

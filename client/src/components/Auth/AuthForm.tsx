@@ -3,7 +3,7 @@ import { useAppSelector } from "../../store/hook";
 import { Formik, Form } from "formik";
 import * as Yup from "yup";
 import Button from "../UI/Button";
-import { User } from "../../config";
+import { loginURL, registerURL, User } from "../../config";
 import classes from "./AuthForm.module.css";
 import TextField from "../UI/TextField";
 
@@ -15,7 +15,7 @@ interface authFormProps {
 }
 
 const AuthForm: React.FC<{
-  onLogin: (isLogin: boolean, data: User) => void;
+  onLogin: (url: string, data: User) => void;
 }> = ({ onLogin }) => {
   const [isLogin, setIsLogin] = useState(true);
   const isLoading = useAppSelector((state) => state.auth.loading);
@@ -46,14 +46,19 @@ const AuthForm: React.FC<{
   };
 
   const submitHandler = (values: authFormProps) => {
+
     const data: User = {
-      name: values.name,
       email: values.email,
       password: values.password,
     };
     
+    let url:string = loginURL
+    if(!isLogin){
+      url = registerURL
+      data.name =  values.name
+    }
 
-    onLogin(isLogin, data);
+    onLogin(url, data);
   };
 
   return (
