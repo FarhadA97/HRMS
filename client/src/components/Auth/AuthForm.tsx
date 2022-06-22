@@ -37,7 +37,7 @@ const AuthForm: React.FC<{
       .required("Email is required"),
 
     password: Yup.string()
-      .min(4, "*Password must be atleast 5 characters long.")
+      .min(5, "*Password must be atleast 5 characters long.")
       .required("Password is required"),
   });
 
