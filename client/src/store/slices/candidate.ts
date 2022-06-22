@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
-import { baseURL, ICandidate } from "../../config";
+import { candidateURL, ICandidate } from "../../config";
 import { toastActions, Title } from "./toast";
 
 
@@ -20,15 +20,17 @@ export const getCandidates = createAsyncThunk<ICandidate[]>(
     "candidate/get",
     async (_, thunkAPI) => {
       try {
-        const response = await axios.get(`${baseURL}candidate/`);
+        const response = await axios.get(candidateURL);
         return response.data;
       } catch (err) {
         const hasErrResponse = (
           err as { response: { [key: string]: { message: string } } }
         ).response;
+        
         if (!hasErrResponse) {
           throw err;
         }
+        console.log(hasErrResponse);
         return thunkAPI.rejectWithValue(hasErrResponse);
       }
     }
@@ -39,7 +41,7 @@ export const addCandidate = createAsyncThunk<ICandidate, { data: ICandidate }>(
     "candidate/add",
     async ({ data }, thunkAPI) => {
       try {
-        const response = await axios.post(`${baseURL}candidate/`, data);
+        const response = await axios.post(candidateURL, data);
         thunkAPI.dispatch(getCandidates());
         thunkAPI.dispatch(
           toastActions.showToast({
@@ -49,13 +51,13 @@ export const addCandidate = createAsyncThunk<ICandidate, { data: ICandidate }>(
         );
         return response.data;
       } catch (err) {
-          console.log(err)
         const hasErrResponse = (
           err as { response: { [key: string]: { message: string } } }
         ).response;
         if (!hasErrResponse) {
           throw err;
         }
+        console.log(hasErrResponse.data.message);
         thunkAPI.dispatch(
           toastActions.showToast({
             type: Title.ERROR,
