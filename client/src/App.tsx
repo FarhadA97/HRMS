@@ -1,25 +1,20 @@
-import { useEffect } from "react";
 import { Navigate, Route, Routes } from "react-router-dom";
 import Layout from "./components/Layout/Layout";
 import HomePage from "./pages/HomePage";
 import AuthPage from "./pages/AuthPage";
 import Toast from "./components/UI/Toast";
-import { useAppDispatch, useAppSelector } from "./store/hook";
+import {useAppSelector } from "./store/hook";
 import AddCandidatePage from "./pages/AddCandidatePage";
-import { getCandidates } from "./store/slices/candidate";
+import CandidatesPage from "./pages/CandidatesPage";
 
 const App = () => {
   const list = useAppSelector((state) => state.toast.toastProp);
   const isLoggedIn:boolean = useAppSelector((state) => state.auth.isLoggedIn);
-  const dispatch = useAppDispatch();
+  //const dispatch = useAppDispatch();
  
   //const isLoggedIn:boolean = localStorage.getItem("user") ? true : false;
-  console.log(isLoggedIn)
-
-  useEffect(() => {
-    dispatch(getCandidates());
-    console.log('ran');
-  }, [dispatch]);
+  
+  
 
   return (
     <>
@@ -27,6 +22,7 @@ const App = () => {
       <Layout>
         <Routes>
           <Route path="/" element={isLoggedIn ? <HomePage /> : <Navigate to='/login' replace/>} />
+          <Route path="/candidates" element={isLoggedIn ? <CandidatesPage/> : <Navigate to='/login' replace />} />
           <Route path="/add" element={isLoggedIn ? <AddCandidatePage /> : <Navigate to='/login' replace />} />
           <Route path="/login" element={!isLoggedIn ? <AuthPage /> : <Navigate to='/' replace/>} />
           <Route path="*" element={isLoggedIn ? <Navigate to='/'/> : <Navigate to='/login' replace/>} />
