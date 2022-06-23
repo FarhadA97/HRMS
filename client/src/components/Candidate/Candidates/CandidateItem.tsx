@@ -1,5 +1,7 @@
 import React from "react";
-import { useAppSelector } from "../../../store/hook";
+import { useAppDispatch, useAppSelector } from "../../../store/hook";
+import {deleteCandidate } from "../../../store/slices/candidate/CandidateActions";
+import Button from "../../UI/Button";
 import classes from './CandidateItem.module.css'
 interface candidateData {
   name: string;
@@ -18,6 +20,7 @@ interface Props {
 
 const CandidateItem: React.FC<Props> = (props) => {
   const isLoading = useAppSelector(state => state.candidate.loading);
+  const dispatch = useAppDispatch();
   
   if(isLoading){
     return (<h2 style={{textAlign : 'center'}}>Loading...</h2>)
@@ -37,6 +40,7 @@ const CandidateItem: React.FC<Props> = (props) => {
             <th>Field</th>
             <th>Reference</th>
             <th>Status</th>
+            <th>Actions</th>
           </tr>
         </thead>
         <tbody>
@@ -49,6 +53,13 @@ const CandidateItem: React.FC<Props> = (props) => {
               <th>{item.field}</th>
               <th>{item.reference}</th>
               <th>{item.status}</th>
+              <th>
+                <div className={classes.btn}>
+                  <Button className="actions">Edit</Button>
+                  <Button className="actions" onClick={() => {dispatch(deleteCandidate({id:item._id ? item._id : ''}))}}>Delete</Button> 
+                </div>
+                
+              </th>
             </tr>
           ))}
         </tbody>
