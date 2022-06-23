@@ -17,3 +17,11 @@
 .candidate-item tr:nth-child(even) {
     background-color: #dddddd;
   }
+
+.btn{
+  text-align: center;
+}
+
+.btn1{
+  display: inline-block;
+}
