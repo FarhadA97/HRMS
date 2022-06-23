@@ -2,7 +2,7 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 import { ICandidate } from "../../../config";
 import { useAppDispatch } from "../../../store/hook";
-import { addCandidate } from "../../../store/slices/candidate";
+import { addCandidate } from "../../../store/slices/candidate/CandidateActions";
 import CandidateForm from "./CandidateForm";
 
 const NewCandidate = () => {

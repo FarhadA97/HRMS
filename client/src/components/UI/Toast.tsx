@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect } from "react";
-import { toastActions } from "../../store/slices/toast";
+import { toastActions } from "../../store/slices/toast/ToastSlice";
 import { useDispatch } from "react-redux";
 import styles from "./Toast.module.css";
 
