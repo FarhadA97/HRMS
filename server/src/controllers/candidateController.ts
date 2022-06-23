@@ -1,4 +1,5 @@
 import { RequestHandler } from "express";
+import mongoose from "mongoose";
 import CandidateModel, { ICandidate } from '../model/Candidate';
 
 export const getCandidates: RequestHandler = async (req, res) => {
@@ -23,4 +24,14 @@ export const addCandidate: RequestHandler = async (req, res) => {
     } catch (error) {
         res.status(409).json({ message: "Couldn't Process Request" });
     }
+};
+
+export const deleteCandidate: RequestHandler = async (req, res) => {
+    const { id } = req.params;
+    
+    if (!mongoose.Types.ObjectId.isValid(id)) return res.status(404).send(`No post with id: ${id}`);
+
+    await CandidateModel.findByIdAndRemove(id);
+    res.json({ message: "Record deleted successfully." });
+
 };
