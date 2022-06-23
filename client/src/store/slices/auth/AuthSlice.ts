@@ -1,7 +1,7 @@
-import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import axios from "axios";
-import { User } from "../../config";
-import { Title, toastActions } from "./toast";
+import { createSlice } from "@reduxjs/toolkit";
+import { login } from "./AuthActions";
+
+
 
 declare interface IUser {
   name: string;
@@ -28,37 +28,7 @@ const initialAuthState: AuthState = {
   errors: null,
 };
 
-export const login = createAsyncThunk<IPayload, { data: User; url: string }>(
-  "auth/login",
-  async ({ data, url }, thunkAPI) => {
-    try {
-      const response = await axios.post(url, data);
-      localStorage.setItem("user", JSON.stringify(response.data.user));
-      localStorage.setItem("token", JSON.stringify(response.data.token));
-      thunkAPI.dispatch(
-        toastActions.showToast({
-          type: Title.SUCCESS,
-          message: "User Logged in",
-        })
-      );
-      return response.data;
-    } catch (err) {
-      const hasErrResponse = (
-        err as { response: { [key: string]: { message: string } } }
-      ).response;
-      if (!hasErrResponse) {
-        throw err;
-      }
-      thunkAPI.dispatch(
-        toastActions.showToast({
-          type: Title.ERROR,
-          message: hasErrResponse.data.message,
-        })
-      );
-      return thunkAPI.rejectWithValue(hasErrResponse);
-    }
-  }
-);
+
 
 const authSlice = createSlice({
   name: "auth",

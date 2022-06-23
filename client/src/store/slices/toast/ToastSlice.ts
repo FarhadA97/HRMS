@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { IToastProps } from "../../components/UI/Toast";
-import { Type } from "../../config/index";
+import { IToastProps } from "../../../components/UI/Toast";
+import { Type } from "../../../config/index";
 
 export enum Title {
   SUCCESS = "Success",
