@@ -4,10 +4,8 @@ import Layout from "./components/Layout/Layout";
 import HomePage from "./pages/HomePage";
 import AuthPage from "./pages/AuthPage";
 import Toast from "./components/UI/Toast";
-import { useAppSelector } from "./store/hook";
 
 const App = () => {
-  const list = useAppSelector((state) => state.toast.toastProp);
   const location = useLocation();
   const [isLoggedIn, setIsLoggedIn] = useState(
     localStorage.getItem("user") ? true : false
@@ -19,7 +17,7 @@ const App = () => {
 
   return (
     <>
-      <Toast toastList={list} position="top-right" />
+      <Toast position="top-right" />
       <Layout>
         <Routes>
           <Route path="/" element={isLoggedIn ? <HomePage /> : <Navigate to='/login' replace/>} />

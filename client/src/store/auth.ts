@@ -39,6 +39,7 @@ export const login = createAsyncThunk<IPayload, { data: User; url: string }>(
         toastActions.showToast({
           type: Title.SUCCESS,
           message: "User Logged in",
+          autoClose: 300,
         })
       );
       return response.data;
@@ -53,6 +54,7 @@ export const login = createAsyncThunk<IPayload, { data: User; url: string }>(
         toastActions.showToast({
           type: Title.ERROR,
           message: hasErrResponse.data.message,
+          autoClose: 9000
         })
       );
       return thunkAPI.rejectWithValue(hasErrResponse);
