@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { IToastProps } from "../../../components/UI/Toast";
+import { IToastProps } from "../../../components/UI/Toast/ToastItem";
 import { Type } from "../../../config/index";
 
 export enum Title {
@@ -10,6 +10,7 @@ export enum Title {
 declare interface IPayload {
   type: string;
   message: string;
+  autoClose? : boolean | number;
 }
 
 let toastProperties: IToastProps;
@@ -30,6 +31,7 @@ const toastSlice = createSlice({
             title: Title.SUCCESS,
             description: action.payload.message,
             backgroundColor: "#5cb85c",
+            autoClose: action.payload.autoClose ? action.payload.autoClose : true,
           };
           break;
         case Type.ERROR:
@@ -38,6 +40,7 @@ const toastSlice = createSlice({
             title: Title.ERROR,
             description: action.payload.message,
             backgroundColor: "#d9534f",
+            autoClose: action.payload.autoClose ? action.payload.autoClose : true,
           };
           break;
         default:

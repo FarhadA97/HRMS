@@ -32,6 +32,7 @@ export const login = createAsyncThunk<IPayload, { data: User; url: string }>(
           toastActions.showToast({
             type: Title.ERROR,
             message: hasErrResponse.data.message,
+            autoClose: 9000,
           })
         );
         return thunkAPI.rejectWithValue(hasErrResponse);

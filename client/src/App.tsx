@@ -2,13 +2,12 @@ import { Navigate, Route, Routes } from "react-router-dom";
 import Layout from "./components/Layout/Layout";
 import HomePage from "./pages/HomePage";
 import AuthPage from "./pages/AuthPage";
-import Toast from "./components/UI/Toast";
+import Toast from "./components/UI/Toast/Toast";
 import {useAppSelector } from "./store/hook";
 import AddCandidatePage from "./pages/AddCandidatePage";
 import CandidatesPage from "./pages/CandidatesPage";
 
 const App = () => {
-  const list = useAppSelector((state) => state.toast.toastProp);
   const isLoggedIn:boolean = useAppSelector((state) => state.auth.isLoggedIn);
   //const dispatch = useAppDispatch();
  
@@ -18,7 +17,7 @@ const App = () => {
 
   return (
     <>
-      <Toast toastList={list} position="top-right" />
+      <Toast position="top-right" />
       <Layout>
         <Routes>
           <Route path="/" element={isLoggedIn ? <HomePage /> : <Navigate to='/login' replace/>} />
