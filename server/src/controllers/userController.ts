@@ -24,7 +24,7 @@ export const login: RequestHandler = async (req, res) => {
 
     const token = jwt.sign({ email: oldUser.email, id: oldUser._id }, secret, { expiresIn: "1h" });
 
-    res.status(200).json({ user: oldUser, token });
+    res.status(200).json({ user: {...oldUser._doc, password: '' }, token });
   } catch (err) {
     res.status(500).json({ message: "Something went wrong" });
   }
@@ -44,7 +44,7 @@ export const register : RequestHandler = async (req, res) => {
 
     const token = jwt.sign( { email: result.email, id: result._id }, secret, { expiresIn: "1h" } );
 
-    res.status(200).json({ user:result , token });
+    res.status(200).json({ user:{...result._doc, password:''} , token });
   } catch (error) {
     res.status(500).json({ message: "Something went wrong" });
     

@@ -1,10 +1,12 @@
 import { configureStore } from '@reduxjs/toolkit'
-import authReducer from './auth';
-import toastReducer from './toast';
+import authReducer from './slices/auth/AuthSlice';
+import candidateReducer from './slices/candidate/CandidateSlice'
+import toastReducer from './slices/toast/ToastSlice';
 
 export const store = configureStore({
   reducer: {
     auth:authReducer,
+    candidate:candidateReducer,
     toast:toastReducer
   },
   middleware: (getDefaultMiddleware) =>

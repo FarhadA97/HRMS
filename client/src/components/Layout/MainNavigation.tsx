@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { useAppDispatch } from "../../store/hook";
 import { Link } from "react-router-dom";
 import classes from "./MainNavigation.module.css";
-import { authActions } from "../../store/auth";
+import { authActions } from "../../store/slices/auth/AuthSlice";
 
 const MainNavigation = () => {
   const dispatch = useAppDispatch();
@@ -29,7 +29,7 @@ const MainNavigation = () => {
           )}
           {isLoggedIn && (
             <li>
-              <Link to="/profile">Profile</Link>
+              <Link to="/candidates">View Candidates</Link>
             </li>
           )}
           {isLoggedIn && (

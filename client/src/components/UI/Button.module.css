@@ -1,4 +1,4 @@
-.login {
+.submit {
     cursor: pointer;
     font: inherit;
     color: white;
@@ -8,14 +8,14 @@
     padding: 0.5rem 2.5rem;
   }
   
-.login:hover {
+.submit:hover {
     background-color: #873abb;
     border-color: #873abb;
   }
 
-.login:disabled,
-.login:disabled:hover,
-.login:disabled:active {
+.submit:disabled,
+.submit:disabled:hover,
+.submit:disabled:active {
   background-color: #ccc;
   color: #656262;
   border-color: #ccc;
@@ -33,3 +33,13 @@
     background-color: transparent;
     color: #ae82cc;
   }
+
+.actions {
+    cursor: pointer;
+    color: white;
+    margin: 0.1rem;
+    background-color: #615966;
+    border: 1px solid #615966;
+    border-radius: 4px;
+    padding: 0.15rem 0.5rem;
+}
