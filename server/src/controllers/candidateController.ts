@@ -26,6 +26,17 @@ export const addCandidate: RequestHandler = async (req, res) => {
     }
 };
 
+export const updateCandidate: RequestHandler = async (req, res) => {
+    const { id } = req.params;
+    if (!mongoose.Types.ObjectId.isValid(id)) return res.status(404).send(`No post with id: ${id}`);
+
+    const updatedData : ICandidate =  req.body;
+    await CandidateModel.findByIdAndUpdate(id, updatedData, {new:true});
+    res.json({ message: "Record updated"});
+
+
+}
+
 export const deleteCandidate: RequestHandler = async (req, res) => {
     const { id } = req.params;
     
