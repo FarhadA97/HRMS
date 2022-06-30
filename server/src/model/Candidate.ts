@@ -8,6 +8,7 @@ export interface ICandidate extends Document {
     contact: string;
     status?: string;
     reference: string;
+    notes: {id:string, text:string}[];
 }
 
 const candidateSchema: Schema = new Schema({
@@ -17,7 +18,8 @@ const candidateSchema: Schema = new Schema({
   field: { type: String, required: true },
   contact: { type: String, required: true },
   status: { type: String, default: 'N/A'},
-  reference: { type: String, required: true}
+  reference: { type: String, required: true},
+  notes: {type: [Object], default: []}
 });
 
 export default model<ICandidate>("Candidate", candidateSchema);
