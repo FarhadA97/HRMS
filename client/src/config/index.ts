@@ -13,6 +13,11 @@ export interface User{
   password: string
 }
 
+export interface INotes{
+  id: string,
+  text: string,
+}
+
 export interface ICandidate{
   name: string;
   email: string;
@@ -21,5 +26,6 @@ export interface ICandidate{
   contact: string;
   status?: string;
   reference: string;
+  notes? : INotes[];
   _id?: string;
 }
