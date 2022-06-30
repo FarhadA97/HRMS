@@ -6,7 +6,7 @@ declare interface ButtonProps {
   type?: "submit" | "reset" | "button";
   className: string;
   disabled?: boolean;
-  onClick?: () => void;
+  onClick?: (e:React.MouseEvent<HTMLButtonElement>,id?:string,) => void;
 }
 
 const Button: React.FC<ButtonProps> = ({
