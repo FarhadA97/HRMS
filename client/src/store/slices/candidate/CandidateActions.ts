@@ -3,6 +3,7 @@ import axios from "axios";
 import { candidateURL, ICandidate } from "../../../config";
 import { candidateActionsTypes } from "./ActionTypes";
 import { toastActions, Title } from "../toast/ToastSlice";
+import { NavigateFunction } from "react-router-dom";
 
 export const getCandidates = createAsyncThunk<ICandidate[]>(
   candidateActionsTypes.GET_CANDIDATES,
@@ -23,9 +24,9 @@ export const getCandidates = createAsyncThunk<ICandidate[]>(
   }
 );
 
-export const addCandidate = createAsyncThunk<ICandidate, { data: ICandidate }>(
+export const addCandidate = createAsyncThunk<ICandidate, { data: ICandidate, navigate: NavigateFunction }>(
   candidateActionsTypes.ADD_CANDIDATE,
-  async ({ data }, thunkAPI) => {
+  async ({ data, navigate }, thunkAPI) => {
     try {
       const response = await axios.post(candidateURL, data);
       thunkAPI.dispatch(getCandidates());
@@ -35,6 +36,7 @@ export const addCandidate = createAsyncThunk<ICandidate, { data: ICandidate }>(
           message: "Candidate Added",
         })
       );
+      navigate("/candidates")
       return response.data;
     } catch (err) {
       const hasErrResponse = (
@@ -57,8 +59,8 @@ export const addCandidate = createAsyncThunk<ICandidate, { data: ICandidate }>(
 
 export const editCandidate = createAsyncThunk<
   { message: string },
-  { data: ICandidate; id: string }
->(candidateActionsTypes.EDIT_CANDIDATE, async ({ data, id }, thunkAPI) => {
+  { data: ICandidate, id: string, navigate: NavigateFunction }
+>(candidateActionsTypes.EDIT_CANDIDATE, async ({ data, id, navigate }, thunkAPI) => {
   try {
     const response = await axios.put(`${candidateURL}${id}`, data);
     thunkAPI.dispatch(getCandidates());
@@ -68,6 +70,7 @@ export const editCandidate = createAsyncThunk<
         message: "Record Updated!",
       })
     );
+    navigate("/candidates")
     return response.data;
   } catch (err) {
     const hasErrResponse = (

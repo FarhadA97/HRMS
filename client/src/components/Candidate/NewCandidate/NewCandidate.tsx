@@ -10,22 +10,13 @@ const NewCandidate = () => {
   const navigate = useNavigate();
   const addCandidateHandler : (data: ICandidate) => void = (data) => {
 
-    dispatch(addCandidate({data}))
-      .unwrap()
-      .then(() => {
-        navigate('/candidates')
-      })
-      .catch((e) => {})
+    dispatch(addCandidate({data,navigate}))
   };
 
   const editCandidateHandler : (data: ICandidate, id: string) => void = (data,id) => {
 
-    dispatch(editCandidate({data,id}))
-      .unwrap()
-      .then(() => {
-        navigate('/candidates')
-      })
-      .catch((e) => {})
+    dispatch(editCandidate({data,id,navigate}))
+
   }
 
   return (

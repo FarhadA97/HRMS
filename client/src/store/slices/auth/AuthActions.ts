@@ -1,5 +1,6 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
+import { NavigateFunction } from "react-router-dom";
 import { User } from "../../../config";
 import { Title, toastActions } from "../toast/ToastSlice";
 import { authActionTypes } from "./ActionTypes";
@@ -7,9 +8,9 @@ import { IPayload } from "./AuthSlice";
 
 
 
-export const login = createAsyncThunk<IPayload, { data: User; url: string }>(
+export const login = createAsyncThunk<IPayload, { data: User, url: string, navigate: NavigateFunction }>(
     authActionTypes.LOGIN,
-    async ({ data, url }, thunkAPI) => {
+    async ({ data, url, navigate }, thunkAPI) => {
       try {
         const response = await axios.post(url, data);
         localStorage.setItem("user", JSON.stringify(response.data.user));
@@ -20,6 +21,7 @@ export const login = createAsyncThunk<IPayload, { data: User; url: string }>(
             message: "User Logged in",
           })
         );
+        navigate("/");
         return response.data;
       } catch (err) {
         const hasErrResponse = (

@@ -8,16 +8,9 @@ import { useNavigate } from "react-router-dom";
 const AuthPage = () => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
+  
   const loginHandler: (url:string, data: User) => void = (url,data) => {
-    dispatch(login({ data, url }))
-      .unwrap()
-      .then(() => {
-        navigate("/");
-      })
-      .catch((e) => {
-        // can dispatch toast either here or in catch block of the above dispatched login method which is async thunk function
-        // error toast is dispatched in catch block of asyncthunk login function
-      });
+    dispatch(login({ data, url, navigate }))
   };
 
   return <AuthForm onLogin={loginHandler} />;
