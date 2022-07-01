@@ -10,7 +10,7 @@ const Candidates = () => {
   const candidatesList = useAppSelector((state) => state.candidate.candidates);
 
   const clickHandler = () => {
-    navigate("/add");
+    navigate("/candidates/add");
   };
 
   

@@ -69,7 +69,7 @@ const CandidateItem: React.FC<Props> = (props) => {
               <th>{item.status}</th>
               <th>
                 <div className={classes.btn}>
-                  <Button className="actions" onClick={() => navigate(`/edit/${item._id}`)}>Edit</Button>
+                  <Button className="actions" onClick={() => navigate(`/candidates/edit/${item._id}`)}>Edit</Button>
                   <Button className="actions" onClick={() => {dispatch(deleteCandidate({id:item._id ? item._id : ''}))}}>Delete</Button> 
                   <Button className="actions" onClick={notesHandler.bind(null,item._id!)} > {notesId === item._id ? 'Hide Notes' : 'View Notes'} </Button>
                   {notesId === item._id && <Notes candidateId={item._id} onCancel = {notesHandler} />}

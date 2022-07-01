@@ -26,8 +26,8 @@ const App = () => {
         <Routes>
           <Route path="/" element={isLoggedIn ? <HomePage /> : <Navigate to='/login' replace/>} />
           <Route path="/candidates" element={isLoggedIn ? <CandidatesPage/> : <Navigate to='/login' replace />} />
-          <Route path="/add" element={isLoggedIn ? <AddCandidatePage /> : <Navigate to='/login' replace />} />
-          <Route path="/edit/:id" element={isLoggedIn ? <AddCandidatePage /> : <Navigate to='/login' replace/>} />
+          <Route path="/candidates/add" element={isLoggedIn ? <AddCandidatePage /> : <Navigate to='/login' replace />} />
+          <Route path="/candidates/edit/:id" element={isLoggedIn ? <AddCandidatePage /> : <Navigate to='/login' replace/>} />
           <Route path="/login" element={!isLoggedIn ? <AuthPage /> : <Navigate to='/' replace/>} />
           <Route path="*" element={isLoggedIn ? <Navigate to='/'/> : <Navigate to='/login' replace/>} />
         </Routes>
