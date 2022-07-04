@@ -26,6 +26,10 @@ const NoteItem: React.FC<Props> = (props) => {
   };
 
   const editSubmitHandler = (id: string) => {
+    if(editNoteText.trim() === ""){
+      deleteHandler(id);
+      return;
+    }
     props.onEdit(id, editNoteText);
     setIsEdit(false);
     setEditNoteId("");

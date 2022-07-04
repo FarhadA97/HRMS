@@ -3,21 +3,13 @@ import Layout from "./components/Layout/Layout";
 import HomePage from "./pages/HomePage";
 import AuthPage from "./pages/AuthPage";
 import Toast from "./components/UI/Toast/Toast";
-import {useAppDispatch, useAppSelector } from "./store/hook";
+import {useAppSelector } from "./store/hook";
 import AddCandidatePage from "./pages/AddCandidatePage";
 import CandidatesPage from "./pages/CandidatesPage";
-import { getCandidates } from "./store/slices/candidate/CandidateActions";
-import { useEffect } from "react";
 
 const App = () => {
   const isLoggedIn:boolean = useAppSelector((state) => state.auth.isLoggedIn);
-  const dispatch = useAppDispatch();
  
-  //const isLoggedIn:boolean = localStorage.getItem("user") ? true : false;
-  
-  useEffect(() => {
-    dispatch(getCandidates());
-  }, [dispatch]);
 
   return (
     <>
