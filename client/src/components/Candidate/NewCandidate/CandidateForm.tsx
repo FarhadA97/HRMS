@@ -87,7 +87,6 @@ const CandidateForm: React.FC<Props> = ({
 
     if (isEdit) {
       data.status = values.status;
-      console.log(data);
       onEditCandidate(data, id!);
       return;
     }
