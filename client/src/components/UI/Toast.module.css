@@ -1,0 +1,66 @@
+.container{
+    font-size: 10px;
+    position: fixed;
+    z-index: 10;
+}
+
+.top-right{
+    top: 1rem;
+    right: 1rem;
+    animation: toast-right .7s;
+}
+
+.notification{
+    margin-bottom: 1rem;
+    border-radius: 4px;
+    box-shadow: 0 0 10px #999;
+    color: #000;
+    opacity: 0.9;
+    transition: .3s ease;
+}
+
+.notification:hover{
+    box-shadow: 0 0 12px #fff;
+}
+
+.toast{
+    height: auto;
+    width: 350px;
+    color: #fff;
+    padding: 20px 15px 10px 10px;
+}
+
+.container button{
+    float: right;
+    background: none;
+    border: none;
+    color: #fff;
+    opacity: 0.8;
+    cursor: pointer;
+}
+
+.title{
+    font-weight: 100;
+    font-size: 20px;
+    text-align: left;
+    margin-top: 0;
+    margin-bottom: 6px;
+    width: 300px;
+    height: 18px;
+}
+
+.description{
+    margin: 5 0 0 0;
+    font-size: 16px;
+    text-align: left;
+}
+
+@keyframes toast-right {
+    from{
+        transform: translateX(100%);
+    }
+    to{
+        transform: translate(0);
+    }
+}
+
