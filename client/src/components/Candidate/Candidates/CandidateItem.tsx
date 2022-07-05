@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { INotes } from "../../../config";
-import { useAppDispatch } from "../../../store/hook";
+import { useAppDispatch, useAppSelector } from "../../../store/hook";
 import {deleteCandidate } from "../../../store/slices/candidate/CandidateActions";
 import Button from "../../UI/Button";
 import Notes from "../Notes/Notes";
@@ -26,6 +26,7 @@ interface Props {
 }
 
 const CandidateItem: React.FC<Props> = (props) => {
+  const isLoading = useAppSelector(state => state.candidate.loading);
   const [notesId, setNotesId] = useState<string | null>(null);
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
@@ -35,9 +36,8 @@ const CandidateItem: React.FC<Props> = (props) => {
         prevState = prevState === id ? null : id
       )
   }
-
-
-
+  
+  if(isLoading) return <h2 style={{textAlign : 'center'}}>Loading...</h2>
   
   if(props.list.length === 0){
     return (<h2 style={{textAlign : 'center'}}>There are no candidates.</h2>)
@@ -58,7 +58,7 @@ const CandidateItem: React.FC<Props> = (props) => {
           </tr>
         </thead>
         <tbody>
-          {props.list.map((item) => (
+          {props.list.map((item) => item && (
             <tr key={item._id}>
               <th>{item.name}</th>
               <th>{item.email}</th>
