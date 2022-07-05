@@ -12,7 +12,7 @@ export const addNote : RequestHandler = async (req,res) => {
         candidate.notes.push(note) 
         await CandidateModel.findByIdAndUpdate(id, candidate, {new: true});
     }
-    res.json({message: "Note Added"});
+    res.json({candidate});
 }
 
 export const deleteNote : RequestHandler = async (req,res) => {
@@ -27,7 +27,7 @@ export const deleteNote : RequestHandler = async (req,res) => {
         candidate.notes = updatedNotes.splice(0)
         await CandidateModel.findByIdAndUpdate(id, candidate, {new: true});
     }
-    res.json({message: "Note Deleted"});
+    res.json({candidate});
 }
 
 export const editNote : RequestHandler = async (req,res) => {
@@ -41,6 +41,6 @@ export const editNote : RequestHandler = async (req,res) => {
         candidate.notes = editedNotes.splice(0)
         await CandidateModel.findByIdAndUpdate(id, candidate, {new: true});
     }
-    res.json({message: "Note Edited"});
+    res.json({candidate});
 
 }
