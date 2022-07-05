@@ -30,21 +30,21 @@ const CandidateForm: React.FC<Props> = ({
   let { id } = useParams();
   let isEdit = false;
   let currentCandidate = useAppSelector((state) =>
-    state.candidate.candidates.filter((e) => e._id === id)
+    state.candidate.candidates.find((e) => e._id === id) as ICandidate
   );
 
-  if (currentCandidate.length > 0) {
+  if (currentCandidate) {
     isEdit = true;
   }
 
   const initialCandidateFormValues: candidateFormProps = {
-    name: isEdit ? currentCandidate[0].name : "",
-    email: isEdit ? currentCandidate[0].email : "",
-    dob: isEdit ? currentCandidate[0].dob : "",
-    field: isEdit ? currentCandidate[0].field : "",
-    contact: isEdit ? currentCandidate[0].contact : "",
+    name: currentCandidate ? currentCandidate.name : "",
+    email: currentCandidate ? currentCandidate.email : "",
+    dob: currentCandidate ? currentCandidate.dob : "",
+    field: currentCandidate ? currentCandidate.field : "",
+    contact: currentCandidate ? currentCandidate.contact : "",
     status: "",
-    reference: isEdit ? currentCandidate[0].reference : "",
+    reference: currentCandidate ? currentCandidate.reference : "",
   };
 
   const candidateFormValidation = Yup.object({
